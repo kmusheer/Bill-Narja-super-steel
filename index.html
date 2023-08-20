@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Narja steel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+        .css-serial {
+            counter-reset: serial-number;
+        }
+
+        .css-serial td:first-child:before {
+            counter-increment: serial-number;
+            content: counter(serial-number);
+        }
+
+        .dealerSpacing {
+            letter-spacing: -1px;
+        }
+
+        .billAddress {
+            letter-spacing: -1.5px;
+        }
+
+        @media screen and (max-width: 480px) {
+            .tableOverflow {
+                overflow: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container mt-3">
+
+        <form id="billReceiveForm">
+            <fieldset class="input-group ">
+                <span class="input-group-text p-0">
+                    <select class="form-select col-sm-2" id="nameType" aria-label="Default select example">
+                        <option selected>To</option>
+                        <option value="Ms" id="ms">Ms</option>
+                        <option value="Mr" id="mr">Mr</option>
+                        <option value="Mrs" id="mrs">Mrs</option>
+                    </select>
+                </span>
+                <input type="text " aria-label="First name" id="Name" class="form-control col-sm-10">
+            </fieldset>
+            <div class="form-floating mt-2">
+                <textarea class="form-control" placeholder="Leave a comment here" id="address"
+                    style="height: 100px"></textarea>
+                <label for="address">Address</label> <!-- floatingTextarea2 -->
+
+            </div>
+            <div class="d-sm-flex">
+                <div class="col-sm-6 col-xs-12 border-bottom border-1 border-dark m-0 p-0">
+                    <div class="row">
+                        <label for="GST" class="col-sm-3 col-xs-12 col-form-label ps-4">GST No.</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <input type="text" class="form-control" id="GST" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xs-12 border-bottom border-1 border-dark m-0 p-0">
+                    <div class="row">
+                        <label for="Vehicle" class="col-sm-3 col-form-label ps-4">Vehicle No.</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Vehicle" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-sm-flex">
+                <div class="col-sm-6  col-xs-12 border-bottom border-1 border-dark">
+                    <div class="row">
+                        <label for="Invoice" class="col-sm-3 col-form-label ps-4">Invoice No.</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Invoice" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6  col-xs-12 border-bottom border-1 border-dark">
+                    <div class="row">
+                        <label for="InvoiceDate" class="col-sm-3 col-form-label ps-4">Date</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control" id="InvoiceDate" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-sm-flex">
+                <div class="col-sm-6  col-xs-12 border-bottom border-1 border-dark">
+                    <div class="row">
+                        <label for="Challan" class="col-sm-3 col-form-label ps-4">Challan No.</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="Challan" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6  col-xs-12 border-bottom border-1 border-dark">
+                    <div class="row">
+                        <label for="ChallanDate" class="col-sm-3 col-form-label ps-4">Date</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control" id="ChallanDate" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form id="billForm">
+            <div class="my-4">
+                <div class="form-group row">
+                    <label for="Serial_number" class="col-sm-2 col-form-label ">Sr.No</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="Serial_number" placeholder="Serial_number"
+                            readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="HSN" class="col-sm-2 col-form-label">HSN</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="HSN" placeholder="HSN">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Description" class="col-sm-2 col-form-label">Description</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="Description" placeholder="Description">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Quantity" class="col-sm-2 col-form-label">Quantity</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="Quantity" placeholder="Quantity">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Rate" class="col-sm-2 col-form-label">Rate</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" oninput="add('Quantity','Rate','Amount')" id="Rate"
+                            placeholder="Rate">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Amount" class="col-sm-2 col-form-label">Amount</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="Amount" placeholder="Amount" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="CGST" class="col-sm-2 col-form-label">CGST %</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="CGST" placeholder="CGST">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="SGST" class="col-sm-2 col-form-label">SGST %</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="SGST" placeholder="SGST">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="IGST" class="col-sm-2 col-form-label">IGST %</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="IGST" placeholder="IGST"
+                            onblur="addGst('CGST','SGST','IGST','Gtotal')">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Gtotal" class="col-sm-2 col-form-label">G.total %</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="Gtotal" placeholder="G.total" readonly>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="d-flex ">
+            <div class="form-group col-5 mx-3">
+                <div class="col-sm-10">
+                    <button type="submit" onclick="billReceiveFormSubmit()" class="btn btn-primary">Add Final
+                        Bill</button>
+                </div>
+            </div>
+            <div class="form-group col-5 mx-3">
+                <div class="col-sm-10">
+                    <button type="submit" onclick="billFormSubmit()" class="btn btn-primary">Add Bill</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab" class="p-5">
+            <div id="userData"></div>
+
+            <div class="tableOverflow  m-0">
+                <table class="table container mb-1" id="dataReceiverBorder">
+                    <tbody id="billRecieverData">
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="tableOverflow  m-0">
+                <table class="table container table-bordered border-dark m-0" id="tableBody">
+                    <thead id="billTableHead"></thead>
+                    <tbody id="billTableBody" class="css-serial"></tbody>
+                    <tbody id="totalBillTableBody" class="table table-bordered"></tbody>
+                </table>
+                <table class="table container table-bordered border-dark m-1" id="tableBody2">
+                    <tbody id="amountWord" class="table table-bordered"></tbody>
+                </table>
+            </div>
+            <div id="userDataEnd" class="mb-5 "></div>
+        </div>
+        <div class="container">
+            <button class="btn btn-primary mb-5" id="btPrint" onclick="createPDF()"> Download Pdf</button>
+        </div>
+    </div>
+
+
+    <script>
+        console.log('hello this is creating by Musheer khan');
+
+        // Creating for bill calculation
+
+        class Bill {
+            constructor(Sr_No, HSN, Description, Quantity, Rate, Amount, CGST, SGST, IGST, Gtotal, GSTtotal) {
+                this.Sr_No = Sr_No;
+                this.HSN = HSN;
+                this.Description = Description;
+                this.Quantity = Quantity;
+                this.Rate = Rate;
+                this.Amount = Amount;
+                this.CGST = CGST;
+                this.SGST = SGST;
+                this.IGST = IGST;
+                this.Gtotal = Gtotal;
+                this.GSTtotal = GSTtotal;
+            }
+        }
+
+
+        // Creating bill receiver data
+        class BillReciver {
+            constructor(nameType, name, address, Gst, Invoice, InvoiceDate, challan, challanDate, vehicle) {
+                this.nameType = nameType;
+                this.name = name;
+                this.address = address;
+                this.Gst = Gst;
+                this.Invoice = Invoice;
+                this.InvoiceDate = InvoiceDate;
+                this.challan = challan;
+                this.challanDate = challanDate;
+                this.vehicle = vehicle;
+            }
+        }
+
+        // Displaying bill receiver data 
+        //  displaying constructor
+        class displayReciveData {
+            add(receiveBillData) {
+
+                let billData = document.getElementById('billRecieverData');
+                let uiStringData = `    <tr>
+                                    <td class="col-xs-6 col-sm-6"><span>${receiveBillData.nameType},&nbsp; &nbsp;</span><span class="fw-bold">${receiveBillData.name}</span></td>
+                                    <td class="col-xs-6 col-sm-6"> <span class="fw-bold">Invoice</span> : &nbsp; &nbsp;${receiveBillData.Invoice}</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan='3' class="col-sm-6"><span class="fw-bold">Address</span> : &nbsp; &nbsp;${receiveBillData.address}</td>
+                                    <td class="col-xs-6 col-sm-6"><span class="fw-bold"> Date</span>    : &nbsp; &nbsp;${receiveBillData.InvoiceDate}</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-6 col-sm-6"><span class="fw-bold"> Challan</span> : &nbsp; &nbsp;${receiveBillData.challan}</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-6 col-sm-6"><span class="fw-bold"> Date</span>    : &nbsp; &nbsp;${receiveBillData.challanDate}</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-6 col-sm-6"><span class="fw-bold"> GST</span>     : &nbsp; &nbsp; ${receiveBillData.Gst}</td>
+                                    <td class="col-xs-6 col-sm-6"><span class="fw-bold"> Vehicle</span> : &nbsp; &nbsp; ${receiveBillData.vehicle}</td>
+                                </tr>`;
+                billData.innerHTML = uiStringData;
+            }
+            clear() {
+                document.getElementById('billReceiveForm');
+                billReceiveForm.reset();
+            }
+        }
+
+
+        //  Displaying bill data which is taken by user
+        class Display {
+            add(bill) {
+                let billTableHead = document.getElementById('billTableHead');
+                let billTableBody = document.getElementById('billTableBody');
+                let totalBillTableBody = document.getElementById('totalBillTableBody');
+                let amountWord = document.getElementById('amountWord');
+                let uiString = ` 
+                            <tr>
+                                <th scope="col" class="col-1">Sr.No</th>
+                                <th scope="col" class="col-1">HSN</th>
+                                <th scope="col" class="col-3">Description</th>
+                                <th scope="col" class="col-1">Quantity</th>
+                                <th scope="col" class="col-1">Rate</th>
+                                <th scope="col" class="col-1">CGST</th>
+                                <th scope="col" class="col-1">SGST</th>
+                                <th scope="col" class="col-1">IGST</th>
+                                <th scope="col" class="col-2">Amount</th>
+                                </tr>
+                                `;
+                // <th scope="col" class="col-2">Gtotal</th>
+                billTableHead.innerHTML = uiString;
+                let uiStringBody = `
+                            <tr>
+                            <td scope="row" id="TotalSr_No"></td>
+                            <td id="totalhsn">${bill.HSN}</td>
+                            <td id="totalDesc">${bill.Description}</td>
+                            <td id="totalbillQty">${bill.Quantity}</td>
+                            <td id="TotalBilrate">${bill.Rate}</td>
+                            <td id="totalBillCGST">${bill.CGST}</td>
+                            <td id="totalBillSGST">${bill.SGST}</td>
+                            <td id="totalBillIGST">${bill.IGST}</td>
+                            <td id="totalBillAmount">${bill.Amount}</td>
+                            </tr>
+                            ` ;
+                // <td id ="totalBillGtotal">${bill.Gtotal}</td>
+                billTableBody.innerHTML += uiStringBody;
+                let totalBilluiString = `
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2"></td>
+                                    <td colspan="4">Total Amount :</td>
+                                    <td id="tAmount"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2"></td>
+                                    <td colspan="4">CGST Amount :</td>
+                                    <td id="CCGST"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2"></td>
+                                    <td colspan="4">SGST Amount :</td>
+                                    <td id="SSGST"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2"></td>
+                                    <td colspan="4">IGST Amount :</td>
+                                    <td id="IIGST"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2"></td>
+                                    <td colspan="4">Total GST :</td>
+                                    <td id="gstTotal"></td>
+                                </tr>
+                                <tr>
+                                <td></td>
+                                <td></td>
+                                <td colspan="2">GST NO :27ARZPK3206A1ZV</td>
+                                <td colspan="4" class="fw-bold">Total Amount with GSt : </td>
+                                <td id="tGSTtotal"></td>
+                            </tr>
+                           
+                                `;
+                totalBillTableBody.innerHTML = totalBilluiString;
+                let amountWordUi = `
+                            <tr>
+                                <td colspan="" class="ps-5" id="wordConvert"></td>
+                            </tr>   `
+                amountWord.innerHTML = amountWordUi;
+            }
+            clear() {
+                document.getElementById('billForm');
+                billForm.reset();
+            }
+        }
+
+        // Taking bill data from html into this function 
+        let billForm = document.getElementById('billForm');
+
+        function billFormSubmit() {
+            let Sr_No = document.getElementById('Serial_number').value
+            let HSN = document.getElementById('HSN').value
+            let Description = document.getElementById('Description').value
+            let Quantity = document.getElementById('Quantity').value
+            let Rate = document.getElementById('Rate').value
+            let Amount = document.getElementById('Amount').value
+            let CGST = document.getElementById('CGST').value
+            let SGST = document.getElementById('SGST').value
+            let IGST = document.getElementById('IGST').value
+            let Gtotal = document.getElementById('Gtotal').value
+
+            let bill = new Bill(Sr_No, HSN, Description, Quantity, Rate, Amount, CGST, SGST, IGST, Gtotal);
+            let display = new Display();    //Calling display class
+            display.add(bill);              //Calling add function with display function
+            addTotal();
+            addCgst();
+            addSgst();
+            addIgst();
+            addGSTtotal();
+            addAmountWithGst();
+            display.clear();
+            // e.preventDefault();             // For changing default behaviour 
+
+            document.getElementById('tableBody').style.border = '2px solid black';
+            document.getElementById('tableBody2').style.border = '1px solid black';
+        }
+
+        let billReceiveForm = document.getElementById('billReceiveForm');
+        function billReceiveFormSubmit(e) {
+
+            let nameType;
+            let ms = document.getElementById('ms');
+            let mr = document.getElementById('mr');
+            let mrs = document.getElementById('mrs');
+
+            if (ms.selected) {
+                nameType = ms.value;
+            }
+            else if (mr.selected) {
+                nameType = mr.value;
+            }
+            else if (mrs.selected) {
+                nameType = mrs.value;
+            }
+
+            let name = document.getElementById('Name').value;
+            let address = document.getElementById('address').value;
+            let Gst = document.getElementById('GST').value;
+            let vehicle = document.getElementById('Vehicle').value;
+            let Invoice = document.getElementById('Invoice').value;
+            let InvoiceDate = document.getElementById('InvoiceDate').value;
+            let challan = document.getElementById('Challan').value;
+            let challanDate = document.getElementById('ChallanDate').value;
+
+            let billReciver = new BillReciver(nameType, name, address, Gst, Invoice, InvoiceDate, challan, challanDate, vehicle);
+
+            let displayRecivedData = new displayReciveData()
+            displayRecivedData.add(billReciver)
+            displayRecivedData.clear();
+
+            document.getElementById('dataReceiverBorder').style.border = '2px solid black';
+
+        }
+
+
+        // User taking bill data to calculate here
+        function add(Quantity, Rate, Amount) {
+            let qty = document.getElementById(Quantity).value;
+            let rate = document.getElementById(Rate).value;
+            let totalAmount = parseFloat(rate) * parseFloat(qty);
+            if (!isNaN(totalAmount)) {
+                document.getElementById(Amount).value = totalAmount.toFixed(2);
+            }
+            // addTotalGSTtotal();
+        }
+        var CGSTsum = 0;
+        function addCgst() {
+            let CGST = document.getElementById('CGST').value;
+            let totalBilltableBodytAmount = document.getElementById('tAmount').innerText;
+            // let totalGSTAmount = parseFloat(CGST);
+            CGSTsum += parseFloat(CGST);
+            // let totalBilltableBodyCGST1 = (totalBilltableBodytAmount / 100) * totalGSTAmount;
+            let totalBilltableBodyCGST1 = (totalBilltableBodytAmount / 100) * CGSTsum;
+            document.getElementById('CCGST').innerText = totalBilltableBodyCGST1.toFixed(2);
+        }
+        var SGSTsum = 0;
+        function addSgst() {
+            let SGST = document.getElementById('SGST').value;
+            let totalBilltableBodytAmount = document.getElementById('tAmount').innerText;
+            SGSTsum += parseFloat(SGST);
+            let totalBilltableBodyCGST1 = (totalBilltableBodytAmount / 100) * SGSTsum;
+            document.getElementById('SSGST').innerText = totalBilltableBodyCGST1.toFixed(2);
+        }
+        var IGSTsum = 0;
+        function addIgst() {
+            let IGST = document.getElementById('IGST').value;
+            let totalBilltableBodytAmount = document.getElementById('tAmount').innerText;
+            IGSTsum += parseFloat(IGST);
+            let totalBilltableBodyCGST1 = (totalBilltableBodytAmount / 100) * IGSTsum;
+            document.getElementById('IIGST').innerText = totalBilltableBodyCGST1.toFixed(2);
+        }
+
+        function addGst(CGST, SGST, IGST, Gtotal) {
+            let cGST = document.getElementById(CGST).value;
+            let sGST = document.getElementById(SGST).value;
+            let iGST = document.getElementById(IGST).value;
+            let totalBilltableBodytAmount = document.getElementById('Amount').value;
+            let totalGSTAmount = parseFloat(cGST) + parseFloat(sGST) + parseFloat(iGST);
+            let totalBilltableBodyCGST1 = (totalBilltableBodytAmount / 100) * totalGSTAmount;
+            document.getElementById(Gtotal).value = totalBilltableBodyCGST1.toFixed(2);
+        }
+        var sum = 0;
+        function addTotal() {
+            let totalBilltableBody = document.getElementById('Amount').value;
+            sum += parseFloat(totalBilltableBody);
+            document.getElementById('tAmount').innerText = sum.toFixed(2);
+        }
+
+
+        var GSTsum = 0;
+        function addGSTtotal() {
+            let ttGtotal = document.getElementById('Gtotal').value;
+            GSTsum += parseFloat(ttGtotal);
+            document.getElementById('gstTotal').innerText = GSTsum.toFixed(2);
+        }
+
+        function addAmountWithGst() {
+            let tAmount = document.getElementById('tAmount').innerText;
+            let gstTotal = document.getElementById('gstTotal').innerText;
+            let addTotalamountWithGst = Number(tAmount) + Number(gstTotal);
+            document.getElementById('tGSTtotal').innerText = addTotalamountWithGst.toFixed(2);
+
+            let wordConvert1 = Math.trunc(addTotalamountWithGst);
+            let wordConvertData = NumToWord(wordConvert1);
+            document.getElementById('wordConvert').innerText = wordConvertData;
+        }
+
+
+        var button = document.getElementById("btPrint");
+        var makepdf = document.getElementById("tab");
+
+        button.addEventListener("click", function () {
+            html2pdf().from(makepdf).save();
+            let userData = document.getElementById('userData');
+            let userdata = `
+                    <div style="text-align: none;" class="container mt-2 pt-1">
+                        <div class=" col-sm-12">
+                            <h2 class="text-center p-0 m-0">TAX INVOICE</h2>
+                            <a class="nav-link active text-dark text-end p-0 m-0" href="tel:+9967329245">9967329245</a>
+                        </div>
+                        <nav class="d-sm-flex flex-column justify-content-center align-items-center mt-2">
+                            <div class="d-flex justify-content-center">
+                                <div class=""><img
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXgAAAEVCAIAAABllWl1AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAADU/SURBVHhe7Z3/Z2PN/78/f+JNrVLKqqVKf6ilrLJsWarUsqxSokqp/lBVoUqVKBEhREQIESEiJISIEhGq7/t17iv5PKqz2aRt2qb7uH5Lz5xz5syXq85z5sz8vztjjJkyFo0xZupYNMaYqWPRGGOmjkVjjJk6Fo0xZupYNMaYqWPRGGOmjkVjjJk6Fo0xZupYNMaYqWPRGGOmjkVjjJk6Fo0xZupYNMaYqWPRGGOmjkVjjJk6Fo0xZupYNMaYqWPRGGOmjkVjjJk6Fo0xZupYNMaYqWPRGGOmjkVjjJk6Fo0xZupYNMaYqWPRGGOmjkVjjJk6Fo0xZupYNMaYqWPRGGOmjkVjjJk6Fs17oz4gNeBswPGAgwGxAXsPIMXBAeccH3OVs7PigNYA7m3Mb7Bo3htoxqIxbwmL5r2BZiwa85awaN4u7QFHA7YGrAz4542xNGBjACaLxa4HlAbwnOYvwKJ5u6AZi8bMPhbN2wXNWDRm9rFoXpnOgB8D6LJ/AVhzawuPHh1hIDvo3WHRvDJoxqKJQDMWzbvDonll0IxFE4FmLJp3h0XzEjDgXK/vDKCrPZa1AbsDLgcwpp1KpQfwO5ViLLrVag7g93g0BmQGXA04GbA9gFDN0hI5fizfB2QHUKZmprBoXgI0Y9FMDpqxaGYci+YlQDMWzeSgGYtmxrFonp/TAfSVCWHgemUFJ+3sMA+3WKwOIK7T6XDL8bh5QHcAv0Nwp06HwfZ2m8vd3fUHcJVuFxU1GoUBjGlfXxOGOTpiuDsWmxvAk4/H8oDNAWgvkyFb5u1h0Tw/aMaiiUAzFs3fjUXz/KAZiyYCzVg0fzcWzVNBKhNqhb6yvMyXiwcHuKRY5Lohbgf0BuAAscAQDnQ6CEMgxWPh3r0emun3yd9IOKfXw0ndLrGfVis/YH/A6gDKazwQ884O1/XXnm8Gi+apoBmL5k9wjkXzV2LRPBU0Y9H8Cc6xaP5KLJrJqAz4OIA2PhKksrzMWi97ewQVMhnGmZtNFCLQHbtdUjSbtQFkolJBTsUiERGBObYC51Qq5QH8FkgqiYdwTrnMDeQWpKhUyF+tRqhGYIS/XidFrUaZhiBFrcaw+ckJJbi8TJmOBxY/OOC65pWwaCaD/mTRRJDUojF/wqKZDPqTRRNBUovG/AmLZhT0+NvbbwNovyP5NYC+UqvRHUslrCBeIDiRz5NC4EA+T/8ulzk5BB1ddPAQbik3fUju93ByocCdKhUG20Pw5OJEDghM9c1mSRpSDxVwe0smcrnDAUwZ/v6dch/J+gCeoVDgBuZFsGhGQRu3aCI42aIxk2PRjII2btFEcLJFYybHoglA889maaQj+TyATxjTaXrG7S1jvzJxluFlGWBmGLbVIoBRr9MLq1U6aKXCddNpspXN0udyOfQgcCCX4xz5qBInCShNDPgQritwQOAqAm4rl3kYeRyes14n8iRQKO025dXtMiTe61Gmt7dUkkAmikVmHMdi1M1ISBqLcadul8uFoCLHG8g3D7FoAtCbLZoIritwQOAqApqxaEyERROA3mzRRHBdgQMCVxHQjEVjIt6WaGjI+TyrWv74wfeFKytMFF1dpVt//szv1VWWZllb+zrgywN4QV9f5/eXLyzSv7HBl3mbm7zxj3zn5yvAubnEAKbfygRczNFq0b9TKfSQzdIhikViErUavbBaJXJQKHBOKsUNEgnOkT7P7xCkyOe5nERk6Poyqs1vgQOhQ9ygWORhslmG6EOQQsB/EuuhmESyWKpUwpFiSU7O5SivapWTQ9N/WSbn6mphAPUXgtaztsYNcjnc1utxORENlR36nBURhlRoLBqL5h4csGgiuJxF82QsGovmHhywaCK4nEXzZN6EaGibmQxzPyec/fkCsCzl0hJdRAZHscvNDc1fghE0yU6HubGNBj21WOSBMxlckkgkB9CxUilSTAjdWqRG35W4CQcmhF6Yy/EwjQYPXK1y3dCVkZwEj/gtKiRpschVJLLD73KZZyiVOEcgriML5QyhJioVvrYcuYgqjW95GUtdXXEV82QsmrFAMxZNBA9j0ZixsWjGAs1YNBE8jEVjxuZNiIZ6DkEcZWOD8Mn370zR/faNF+u1NYIuX75wzpOhuS0vM/4Zi9FaKxXewm9vscvNDf1A+hhJZS4sv+UbSLpaPo8eMhl+S4dEGNksBkomuZNACoGTczn6ZalEJqpVfgtkSz6GJFginz6SQjLPvcebasw5Mhma33KdITxDNktSiePwDNUq183nyValwjmyQQLj1TI6PoTrFgoE7dbXqfUQtLC1NXa6EwjsbW6y7cP2Nge2ts4GxAcwl/nwkANnZ2SiUOD/TCLBLhaXlzzD+8KiCYBmLJoIUlg090EzFs14WDQB0IxFE0EKi+Y+aMaiGY+3LhpmjDabJJU2RNuU93mqrlCgTQkEFRoNfsvIJea4veVOzSZdrV5nSDM0H5SeWirxNn91hQySSZq/QP6qVWIJAr25ViPr0g85WToSKQoFnlzsxu9QdIMUoWANNxDITQiu8ljRDCETko0hbJggcKBcJhNSUBwol6k2WdOH+htZg+Qvn8cla2u0udeG/3ISKuJ/2s0NWZ9BLBqL5h7kJgRXsWimDJqxaJ4dCjgELciiiSCFRRPBAYtmFnijomE658ICKULQgvp9Gpd8xEgKGXum2V5fE8DI5Tgg3zfSNut1+lylgpxETyRtt7lKLscbdiJBs83nEWG3S8eS8ASXazTIn8ANxIATwZPLB5x0vmYT8UioiA4aghQh0IMIgseTkBO/Q3CyxIwouESC3yJi6ubmhqfq9znQbnNvySrXFekTWpPgGsU0EgbAn7wz+nPBYrEfPzJLOp0mozOIRWPR3IMUIejNFs1LgWYsmueCchXQjEUzNjy5RROBZiyaN8NbFw3NTd5OaW7tNu23WKQ/NZs0t1KJ3txoMN64tcV1J4R35eVldo0+OuKWsg02vgl9K0jrSKfZ+mBvjxHRzU32Sdvfp2dIiIdz0mnuJF9g8njS1fldKuHR62uukkxizXqd6cmdDucI3EDgcgI9VfrzEM4RKILQHgzcMhRTQ42yIgy/u12SVqvMAshkuJPstEfSbpcy3d+n2paXKYtkkqQjoZg6HaZUbGzQDgTa5civND8M4Pc//8wPYJHXX794mEyGltpo/BzAOQKD5PE4GZ1BLJpR0Fotmgh+C5wjUAQWTQS/LRqLZjS0Vosmgt8C5wgUgUUTwW+L5s2KhnVlvn4lhUDvkbVLqKhGAyeJlai6UOVNBCvfrK7yvWMqRZPsdGj1xSItWr6KJAKRSPCqPd5ucxNBi5Y2ze8PH9gS/PQUMbfbdFmZIkzWJchC1w/N38U3MkV4BJwjWhlCbUmgivJKpfi3IPNu6fEbG6xLtLJyPICTBSaPy4pCfAu7tISB9veZxru9TemcnvLAhQJJl5Y4eQrQjFZXMUc8TmSu16P1JJMkFfgvd3TEc84gFs1Y0DosmggOjIRzLJr70IwsmleB4hTQjEXzJ5CKRROBZiyat8e0REOTrFT4mOzwkD2QDw4os6MjGkVo6Uy+m/z2jUro9XgL73bp350OvpFtA2ja5TKZuLvjC7azM677WFi/c26Oy52dkQlZa4bWKtDnikX6Suidf3oQDPj1i4Lrdon0yHeS+EY2qyPHYgrOke8tOScE54iVOKdep5gaDSJqMu5OAGN+nqwL2GVlhd8C06XlW0pGp6cwPk31z80tDuDAk+GD4C9fMNDqKgcEes4s7yBu0YwFrcyiieCcEJxj0YwNmrFoHgetzKKJQDMWTQSasWgi0IxFMw4Uw8EBBfNkeEHf3KTZykAsrVXWkWR4OZe7GEC27u5OBnDdJ0MIYWuLjlUq0WkEIiIyvZWsF4vs7fDjB5ebJjz5yQllcXdHwUnRkS1ZphNHyieLaKZW4+RGgwMhsIt8R8o54hdKp93eHUCOBSb2xmLELUKRC0Isp6c8nsTvuK5AJw514yH8c/v2jXvHYjy5bArOJILra84JgRpDcnwc5CYWIxMziEUzGWjGovkNaMaiieD3kyE3Fg2asWgi6EYWTQTnWDRPgNz8taKhcZXLvL/OzVEwT4a4zuEhrVVsQt8V6CsyRkv+xmsWE8H459ISyy5eXnJvuTtdrVIhvCTfSdLD2m1WkRy5juQQ5qKOnI36EDqoTIqlxzca5E8Gqilc2aKAqhXRMN+51eJACK4rosEuAkXQbiPdkHYpOCk6Dgh8SiuQNAThnGyWaFAoHsSB+fnPA2g919dc5e6OCQuJBC1+bo7ZBB8+4HUxO3MrQrMriPQsLjJnfG+PucyhLUCQ5e4u151BLJrJQDMWzW/guhZNBJqxaCyaSUEzFs1v4LoWTQSasWieKBrKNRQBIZKxtUUDlPUWaWUyUZUXa4GmLXGBh5BUEnMnGd5m9mU8Traej08DuLe8xtNT83kGwDsdHrjdJuuNBpa6vORyU4B4lUSsKG6x9n9fb/4LOQ4tKEMsStaR4YFl4/AR8MCNBkUgoSt6qvx/oj1JXyVb+TxdbXeXe0uBj4AR/l+/uMGEEHqUcWXak7QoZi5sbFDZsi034a5CAYWIRPhHenhIUpkRgoFkBJ3fi4vMiT4+JhPxOPWXTnOywHXfBhbNI0EzFs2f4IEtmgjOsWgmgkZh0URwS4vmPjywRRPBORbNRDBJNjTvloFHGXocwjTVbpfykPf5ITQlEQ2Wki0K+C1/4eRqlTvd3dHVLi7I1vNBF5mbOx9AKxs5ZZmnqtXo6Lkck6ND06OfCE8eEg3himyWbxlTKX7Ljt0P4WRZEnQIjxeCB5aqpJg6HVT96RM5/ucfivL8nByPhOqXHTJY4iWT+e+y/8J1//mHoMvnz3TZ0NReBre/faPtnp4S+5HoD2VRLDKCLWPYjJ+vrpI0tJIseojHOSAfABP7SSS43JMhPvTzJ6G1Vos7vQYWzSNBMxZNBI8Xgge2aCLQjEUzEWjGoomg91g09+GBLZoINGPRTAS1cXrKkwm8OI5ct53uKNAk5fu9EdDKmk3OEbjB3R2BkGmGQhimXl+np8o3fvTCSgWpyH7YtDIZm8c3z2ccNPN8osEcAg9TKhGKkBU8OUf0hGYaDVp9q8V011iMDdzW1tDMeKIhXHF8zCD5yPnW9O94nFIOlTNfZO7s8AylEncKwQMXCnwifHTEDeJxbJfJ0FJD/xS5isCSrldX5Ob54LqvuhGdRfNU0IxFE8FviyaClmrRWDRPB81YNBH8tmgiaKkWzRNFw9Bf6FtKSjqTIanAC3qngxVkyim10WzSJENj2PwOiYZzZI1IutoUYjQPYbhSBizJX7PJCK1AmErW/ae8MhnmmcrqnI+DN/5EghuI2ZGKiIZs5fP0MDHFEOwS8ssIOEeCNVR2q0XdXFwwFWJri4HiEEjl+JiJtHt7POdICLp8+0YR3N1RSYeHpBCIOJ6dkVR29eM/RqXCdnb9PlXbbPKchQLhnNtbyj2R4MllwjR1nMlQ3DIHgtKp1SiUiwse+PiY/+enp2j4/JyhfoGvkDc3eRiBwt3aovpDmps2Fs2zQfu1aO7DORZNBHVs0UwEmrFoImi/Fs19OMeiiaCOLZqJYF35/X0eSOB7Pvmij47V7dLKWi2sIOOdTB1tt6lDeaclqaylwgEZRaaiJEZDjb2IaOgQGxs8Q7vNA3e79MtSiVBNLkdGJas8cLNJnODJ61EyoCofBFKCjQaZCM0MpmcIZD20ax0Gkn3juIpACvEU1VavUzcXF4RqYjE2i3jydhGU4M4Od5KuRbbyeZIKlEU6TQNttbBCJkOQ4+qKEmw0SJpOI4PjY1wiq5fSDtptKrtWw0CJBMI4P6cmcjmuKzEscjweGLHX42EEyvTjR/L3GpOGLZpnA81YNPchhUUTgWYsmolAMxZNBJqxaO5DCosmAs1YNBPBy27odZdX/1SKpBKaGUIlhKDPiWiGUGMC7Vf2KuOWLysa1oxZWKDdHR/zMPItJR1UohvkWNZtYUD+8pKNzra3ucGEoBkRDTdoNmnaIhpyUyjQEmWyLzmWTbgxh0DfDcF1ZU8IrlKpkBuB8eF4nIVhQqvGPIRyX1ggxHJ2Rsuo1RjOlQFdirtapXC3t/necXmZMfa1tf/NKY7gugsLzLH9+ZOKlH94mCORoEwFnlPmvlMo+Tz/h2W7Qc6RJYFoPe02V6lUeKpajfKSWdFDKJQQXMWiGUIpWjQR3GBC0IxFE0ERWDQRJH1BLJpngyZp0dyH61o0ERSKRTMRRGhCMRqGT2WaLHYRv9AEbm54JQ1BrQr4RoxD+5UWzC3v7ngPPj8nWy8Co9MfPtCCUimyLtEomlI+jwyur3kGiWXggHSaPjderxtCUOHqirK4u6NMWy3unc8TgZDRVu4tfhlCX5FvRIeQdQnW0GkEbiAj6IwGh5bg5HLFIp04keBhrq74nUhQuLIPOiPP/T7Xvb2lqbXbPLlMoeDkVIrR8r09dnL78oXlWpeWEM/aGv86jo9pczJITxGUyzx5oUC1pdM8eWhvCYpSNqKgJjIZDJRMkrRc5oBA75L+NYTqD0HPeU/D2xSDRRNB1i2aCC5n0UTwnBbNCNCMRXMfNGPR3IcbWDQRFKVFMw7MSQxtAEa5FgoklQ0AeFaZ2juEqmu1SCrtg57aaFDPAhUlXZRbPt/e24+Dtnl8zOPJGzVdrVQiJhGP07iSSZ6qVqP3dDrM69za4rrjQaTn8pJbimiom0KB1prN4gCxwBAKVzxOKQskldgTl8vn6WoiGn7ncjxwMsk50g95clkWc3ogp36f8eFej8bXbpNCIIVszzAEt4k3ua5MI+a6MvWBKmm1KNxKhbIoFOgn9TqFIlCUsuHHEKJKoT0zyEQosjNtLJopgmYsmgh+WzQRaMaiGQc0Y9H8BjRj0UTw26KJQDMWzTjwahv6vI0WJDODhxCYubnhJVVGdnGJwAE5RC8UaOOlEp1GXlx5rZ/CGh/jwIv+0hJj7BcXtLt+n6zXarxzZzI0LlnShRJMJulznQ7fsI63xzmRDPmokhJsNDCH7BtHUCGdpgSzWQ4IHBAr0WnknwfXFemTNJ/nBjILmdw0GnwyeHpKbV1d0WVD4RtKp1TiHDmL/ypnZ7TLvT0WqhE4sLfHZORYjDI9OED58Ti1dXFB/Oz6mqxL2IVnEHhygfYtLZxal/+OXDedprzKZQzU7XJdgctVq7QV+Uc+hJVKQ2uVcrLM/3gxLJopgmYsmghuYNFEkMKiGQdqzKL5DWjGoongBhZNBCksmnGgxkKiofBCS3nyjtvr0TbrdV5SBapF/ELS0Mxg2l2pRJeVRXCIUjx2KU/mh376xBzSx07S5Qu/nR3quVrlOWWkGakIdOtslrJoNulP43mTpNJpubc0U8ork6G2BA7IIXKTzZK/0Pgrbksk+C0DsZyTTHK5dJquViwyzpxK8ZwSRKB08nkqYHubbhTqSG8NpjmMXFqIgMrCArPsDw954JC5aPHiKYpJ4APK0IepVL9FM4TmZtFEUBYWTQSasWgiKCYBzVg0aMaiiaBNWTQRPKdFE0HpCLT4v000vOPGYjyHQMORjyqHEKXo9+lqAlIRaHfydSUlLdBpZLCWOz1ZNCwD+e0buWk02IXs82dSjAd7zc3NEQOIx3ngVotnkAUch/BUhQIRmk6H4NbNDV/4/fzJDUIwJ1p2FODkmxtuKY6m2cpO20P+U0kQmm3IXBwQuIFELgionJ0R9sjl+BfU63HvUoktJtbXeap3B9ZcXCQadH1Ny5ABb8pCJmdT3KEYDXHBpSVuIHCyRUNvFtCMRROBJyyadwSasWhGgGYsmj+BZiyaCH5bNBFoxqIZAZ9Uhj6qRDMh0QxBITIh+CH0bwHfCBT5FETDN3ZfvnC5uzuiC+k0KSaETrO+TsMplRjJ7Ha5bjpNji8v6c3Sn8mEDPEyZTg0aZh/ArEY50iBc10Ze6ajy6gtNxAoZVlZhgMSHRtCjqVLEKFJJrlTLodQLy7oT7LeCjGtJ69n+mbhP8/cHE1WGi3/h/t9Kkk+1+R3ucw5chZxuNtbvBWKYVHK72k9GjRj0dwHzVg0EWjGoomgkiyah6AZi2Zs0IxFE4FmLJoIKsmieQgTKkMTVXndlHUkH8Ks0tBaIRyQNT2HYBcJ1tDYQzOD6bKPFQ0vu0tLXE7gQOhNeBwITpydETWRuAltSqYIM2KcSNBMKhUiGb0eSQsFmu3cHDeQbcNIKt8B0iRvb7m3QBvv90kqcKDfR43dLteVrxC5iiydSdXKl5w8gyzlSVLZRY9neL/wT0D+DQyhCGSRIMQs69rwTymdpkrki1A0ExINlpKvjl8Mi2YUuMSiieCARfMcoBmLZhzQjEUzOWjGookgqUUTQRFYNEOYyRjaBQHNjBQNrVWW5KDdiWg4EIKYTaNB4ZXL1EYuxw2eLBrmbC4scDnhaABJJ4QVItfWaFOZDE8lA948TC7HM1xe8lsecAjD3TLgjWa2tigm2ZmM8Em1islkhwMOVKucE5phQLUJDL/LYppk6+6O61YqZD2XIxOtFufIojOU6WNLdYagLKQq8USvR8+5vubfZjaLVOSTTsJdySTn9HrURLfLvODQzGAqu1Tili+IRTMKNGPRRKAZi+Y5oCwsmnFAMxbN5KAZiyaCpBZNBD3HohmCZh4rGkpI3vBpgLKUJy0xBM0/NFjLDZ4smk8D6GH1OrGN21tkUKvxqh2aHj0OyGBriyZQKnGnep0JAqkUzS2bZVRZPqUjE7Ua+35vbHBdGUDdHMBeCvPzHJCAzhC+AvzwgaTz8zTbjx+R7sICjhRWBzBvWuAqch0Grnd2qL9mEzn1+8hy5IznmQaPHh1Rf9ILELxArWez/C8KfaHKVYSVAdxSIMATmk88bSyaUaAZiyYCzVg0TwDNWDQTgWYsmgjOmRA0Y9FEoBmLJoJat2gos9AbNeOxso7kCBgRvblBIZ0OZT8SzpGBYXqh9ENmnj5272260doaApPVJ7mBbIxHBx25+MhD6IXz84j5+prO12zyXi5rX/KCnsvxnMUi/XI2eyYlKPwaQIr3AgPOi4u0FQlLoZBMhvkOZ2doplqlskPLhtIyQus9IfjQd79oxqKhEiyaCJqSRTP7oBmL5nGgGYsmAs1YNGNDCQpoxqKJoLItmpMBPIfAsivxOElDEO24veUFXSDFSEja79P1Gw2CHDJ6R4TmsTEaXnZXVqh5+ayRYFKrRUClXmfhzKsr6nnCNWuIW+zscANZxZLfd3fcqV7Hf2trnDwL0NUWF+k9oUH67wM4Z0Kw1K9f1JaM33NL2e8Br19fU21XVzTZeJyFfEKQIgSeODvjU+P9ff4PHx0RbEulqL96nfxJIIZspdPkOLQbH/9eZE0fupBsF8GmjqFtHXngkZHTKWHRjALNWDTPAZqxaCLIn0UzDmjGoomgtVo0vwHNWDQR5M+iGQc082TREHQJ7Wc8DoQ0ZJybA88nGq5bLhMWkt3vaDj1Om0hn2driNDmECNg7PfjR17ZMxn0KfEgmsn1NefMFDT/3V0eRkZ2+X13x/I/X75wzoRQ2bLd+EO4pQwnU7XlMqG+Wo0aDcG/lxDUVqPBDXo9rlsuowfZv5zLhfbV5iqyzx++kfVoyLr85xtCKVs0Q9CMRROBZiyaCM6ZECrboomgUARaj0XDgQlBMxbN24bmb9FEcDmLZhyOB/AcAm+0sgT/CPBNaKPlcWAScbtNHcpKhbS7x4pmeQD1XCjQpmTjNyq8WiUT7TZJCwWW7ZxwBX+iFN+/ozRZ24U3/pn65pA5yHNzTDS4uOBhZGYAv58co+H/3skJl3ttqL+bG8zRaNBWJHjEf5VMhqm+ssEeKSRYg2ZENPSc9x2jQTMWTQSZsGjug2YsmgjaikUzEWjGookgExbNfdCMRRNBW7FoJoJaDcVoaFPSqh7C6LRAmY1nHJLe3tK/pyCa/31PGUE9i2gYk8xmaQulEu/lvR69p9OhBWUyDHePN+BNv5yb4wVdJjpT3KECf7Pwv+j4mD4XWuWT33d3/Hc6P+fkCWF11aUlPlQVGPf+9YuRZwF5Hx2RUeF0AAPXZ2c064sLGtblJWPjV1fMhU8kGEjP5QjD1Os8XghS1OtUdrHIf7B8HqmEdkFAMxYNtWHRRKAZiyaCh7FoIkhh0YyAVm/RRKAZi+Y+dFmL5jeQwqIZAbXx5BgNHVSg8EYaBzn1+2im3absZcyPtvBY0dBsl5YQWKXCLft92kI+j2+yWd7CGw3GSGs1MvHY/sNMYZkrTBuf8BtRFg06PMR/nQ4ZDYUMeCp5LgIGAmV6eUnHSiTojqenDOzv7ZHRiwsWmOx2eQbxC3cKTX0m67MJ8xQ+fmSJoI0N/j+cnCCMQoFmJJPgKaZul6ZWqSAVGR2nkmQTbq4i10GooQ9T0YxFMwTNWDQRXMWimRHQjEUjWDSjQDMWzX0oU4vmN6AZi0Z4E6Lh3V3AN2IcilOgWrpdNBMSDf0gkSBbE0J7+fiRmpfoDzVfLBKGyWT4LfM4SXp3R7aqVYa7Jxzw5hmkP3NgJIzMLy+TiReBauv1qCTpABzo9SivTIanSiSo9Zsbpng3myw+urnJw7w7iA/t76P8RoPy6vf5N1Wr0Wjk3wDikRgN51g0JB0JrUygSVo0ETyDRfOOQDMWzTigGYsmgt8WTQSVZNH8BjRj0YwDrT7U7tHMhKIhhNDpoBDZ3fkhpBDRUD8SHKFcH/sVIpr5+BGFyEgzd5Jt3rBLocDvXI5O02wSk2i1iG1cXnLd0C5fD+FDwy9fiH9M+Lkm4YGTE/q3QNBFIDCTzRI+kTVQeLxCgQoQm1B/NzeEWOp1qqTdprwECqXZ5Lqhjwaptutr5hd8+sTDvBdYm2dxkX5yfk5RijJwSbVKMRWLlI5FM4TCs2gi0IxFE0GhWDQR9BOLZgRoxqKJoK9YNBFUiUXzG9CMRTMOaObJoqHZysYGD0EqAk7qdGjRoRgNvSedJlsTwuD20hL9QMIu9JVmkwPSSWgUxSJdNptFM60WjaLfJ7gVCm89hN0VPnxguHtnh7nDoR3gpge3lJvye26OneUWFggLLS+T0Z0dRrkvLohyVSoUXLNJRXa7VFI6TcGJ0HF2Lke/XFzk3u8FNsGYn6eYLi5oIv0+zpZJw7Qwi2YImrFoItCMRRNBwVk0EWjGohkBmrFoImgCFk0EGbVo/gSasWhGgGZCoiEqMN7KILhEPrdjTFs+mKSnSl8lxe0trVXUQwqpKrI1ITTtxUWEkc2Sv7s7Ok2lwvL2qRRtQaZv0p9kjVHyJyuw4JuRxqElzs/zW9TD71mA5i9bFFAEMsmbCNblJUVZLNIybm6ogGyWac6Hh/wTWFrCdi+r3WeHiQ/r6/zX7fVou/U6rs3laEblMgfqdZq+TLymPYVaFLMJxtvW8XmxaEaBZiya5wDNWDS/Ac1YNA9BMxZNBD3DovkNaMai+Q1oxqJ5CGGY0LeCrPBxdETSCaHdiSno1pUKjVSmS9IkpVFylbs7Jl02GmRrQtBMaM8zclOpEF2QhReHkC0J1nBOpULr6HaxVCpFbGN5mXuPB7s0rKzw+w2DDObmfgyg4NJpZgrUapRFKkV/EjWTolajRhsNqkS2puZy6TQrxFxd4S2BJnt+zn/CkxO8dXhItn78YD/znz/5LRB52tnZfgAHdnZ44AlhGP/TJ/6jtlo8eadDe5JvKSmLWo1+IjEaFs45O+O6ApqxaIZQeBbNn0AzFk0El7NoIriugGYsmiEUnkXzJ9CMRRPB5SyaCK4roJmZEw1VF1rthTp87Hr0RF9kbzmKvNPBJQKBkGaTFBIB4UCzSRuf8DUezYwUDQoRiWAXmfDKPNxMhqvkciSVsV4GHiecC0vz//GDvnJ4yIv+hN9tvgqxAfSeapXSyeUor0wGhQhUgEAJNpsYSKDLtlqE+gT+g8k22LSeEJzTbvNb/jKEfx3dLv8xJvyfQRxufp7cVKtcrttFuiHoA/LPFY+G/v2jGYtmCJqxaP4EmrFoIrCLgGYsmgg0Y9EMQTMWzZ9AMxZNBHYR0IxFE4FmZk40hGFC+5nRgmIxkk4IBdzt8gLa71O98q5OM6nXaWUh0dDcGg008yKi4X06tHoIBpKoDflrNGit7TbfTY735SSlHItxb4FwRTrNHITTU1bH390lqLC9/W0AS05ubGCp9fW1AXSa5WX89+kTKdbXOWdjgy9Ex/tGdAgrsuzvU20SjCBUk0pRTNks4slkSBr6dzKEomy3+Tc1clt3/qeNt/fGOPAJ7IQ7iKOZ+XmKoFQiW7e3NKNymQMS/sOjspME84tD672iGYtmCJqxaP4EpWzR3IeitGjug2YsmiFoxqL5E5SyRXMfitKiuQ+amTnR8KzFIs8hMDz48ydJJ4QCDtU9TanZxDe1Gr+leZFUVtVHM88nGsxRrRI5yOfp3yHR4JJGgwOl0v/2WI7gd6mEUPt9OlY2+3UA3Xp9nWeYm6PrLy/Tpi4uePLQ+i+Pgw7a63FdmZxNR5euzpNXKv/tk/cvlOBI0N7uLpfrdCjTapXykgUuKZRsNj6AoNThITGJ83NChpeXWCqVotoEwmaFAm03tLUAjaZeJxONBi2s2SQiIqvNUgQCH5guLPCc48Fc7w8fyFaxSB+4vSV/skcFD5PLkb9Gg3uPjJyiGYtmCAVs0USgGYsmAs1YNBHkz6Ih6YRQwBZNBJqxaCLQjEUTQf7et2iG8O4eGpHlLXx/n0dMJOgZFxe0jvNzCi+fpwXF40QX0mluIBC86Xapeal7irzRoH5ub2k41Sq5mRBemufnyZ+MrXLdkGhoJrJBAr4pl0mazzOUfX1Newmt+0nHymZp9fU6l5NBXzpNoYC3kklSZDJcrtmkQ0iXoO/KThKkGBnLGIf/LPMvlOBImEi7s0NGZXya+pPdL9gV4fn2RcDZc3PU8fw8cSaBZv3pE/OvV1YIXK2t8ZyfPxOm2tggf4/NIbmRPdcpglCMhlovFPgnIP9gaAfJJNcV6IEWDZqxaCLQjEUTQSe2aCKodYtmCJqxaCJIatFEoBmLJoLcWDQjwCX7+zzQk+Edd2GBHlavcyeBAzK8zW9ZpIP6KZe57oTQAOfn6fGyHg3xoVqNHi+ioQnIdgicLGO0/BZoXMUiXa3RQJ8hgZIJ2SGPniEDzISXFhfpK58+/dcx/mX1ARz4/Jm+srm59YDvA1hX5tcv7p1IEGvZ3eXe48E5u7s8VWibQDpNqNu8M6i/jx8xh7iDpiZbyg2h4KRJ0MIyGa4rUFsWzRA0Y9FE8NuieddQfxbNCNCMRROBZiyaP8E5Fk0E9WfRjAM9rFBgkcWlJR5xQnhbnZvjuuNB/cjnbWjmsaLBdgsLyGA80SCMYpEUkgbxyEeVvHPLgDd3kr0TWF/k7IxzKhUMdHND1//+nRzPFMwrDy1aRP11u6QIzT5/Z6D81VWKQKBZt9vUukAKgaaWz3NdgUV6rq5I+oJYNKNAMxbNdEAhFk0EmrFoxgHNWDQRpLBofgMKsWgi0IxFMz2Y9xpaQoUU48HbqryvEtsY+VElYRjZY2AImgmJhrBQaAM5XJLLoZlaDT0IJJXvLR9C0kqFW8psXWIbE8ZE3hpM7D085PEEVjM6OSHpbELrGW+KMHrI56njXo/qr1T4F5RM0mgEWryEt9DV6irXFdge4fiYUn5BLBqL5tVAMxZNBJqxaKYHmrFo7kNSi2ZmofVYNG9ENKyJ8u0b5SGQ4rEQ/yiVuNxjYcJyPM517+4In7RaxGNkX2TaSz6PZkQ0KETgnHKZFJKGA+UyV6nV+Fou9L3cC4CqJ/wwdQQ8Va1GmUp9cafnu9dzQbbm5vgC8sMH/k0JJB0Pvo5dXqbWZT1TUjwZbLewwHT70IT7aWPRjAWasWgi+P1keCqLJoJat2imB5qxaCI4YNFEkPTNQLYsmgl5E6Jh2ZWvXykYgRSPhZfdXu9/k14juO6EMLx8dsYwY7uNFSoVGkUuRzMRSCERGX6HIEUI4kPZLEPZszmYPYTK/vqVSpIvVPlgcW2NpO8XvtFcWeHfVLFIWYxcUGYiMOLcHBMEjo4I50gQ88WwaMYCzVg0zwGVbdFEoBmL5gWg3Vk0vwHNWDTvCDRj0bwkfEwWWkOfFE8GPbTbrIUjq+EMYT+BWIyPCLe2+B2L0RZk0XledtNpBh6TST7orNe5U7vNOSMhJiEwWi4w0ntywiyAWdgc7iE48vt3nrxYZP3OTocSTCaZTv7YCeVvH3af2N4mjBfaDw/NhETDB6+bmwxTHx9TpgIHjo+ZfxFa4vblsWj+P0jFopkO9AOLJgLNWDQvCZqxaCKwi4BmLJrZB81YNK8Cr+yhGA2f1nW7JH0RcEmrxYdroU/XCJ+Uyyz+kckQZqhWGbOt1fDEhBDykfX6WdE/lcJt6TQRo7MzRt1l8VOWCL2+5kA8TidOJtmYTkBgJyekEDhwcsJSQ/v7/D45YYOLnz9ZiXNnh+kJAnN+Dw/5jO/qCrtIMAIx1+s8Z6FAFzk+RvCxGE+VTlOmtRo+LpU4kE7zj+L8nAeOx/k9Ev7hCAcPIBOxGOW1t8eT//zJnuc/fvBPaWsLhWxvc04sxpNfXfF4hQIhw16Pabz9PmUh8AzxOH1A4CqFAklnB4smAJqxaCLQjEUTwZNbNBNi0QRAMxZNBJqxaCJ4cotmQt6EaHglDb2U8sq+tEQ97+1RCfE4rUOiLfSDkxP2mj495bqXl4wPZ7NUlOwfxrtyPo8wMhkasuwoRkYF2kuvR/OXZRaxQiqFimTx+nEgf5JDbjkeZOux+xnwNt9u04nTaQpF9nLgOatVfNxq8emq7CDO5WTHBU4ul3m8QoGriJpRrEiWh+n1GJi9vcX9NzdcVyCpwIF+n5NfZGSXIhgZE6G8QiVGaz4/pw8I/BNIJkk6O1g0Fs09aPUWzROgCCwawaKxaO5Bq7dongBFYNEIb0I0NLdq9b/F+v+Fcn0l2D1gcZHZxJ8/Ezk4Piaj1SqNXZo77aXdRmnZLHN+ZdYvLhHoTyHQjIBHZZwbDS8tUXCfPvFh3/w8M09XVpgWenREb5aPGIcQhtnfZzKpbKv2ZQDDpzI+jWZENEMoC5lCTbji6opudH6OycRlhJeur1F1KkVZSKCKhfwTCQ6EoHAFMiFQFrUagSLZPANLid0opueDgmu1uJP8Y+A/6t4ezVHgX+vFBUlnB4smAJqxaCLQjEXzrFBwFs1LQt+1aO5DbxbQjEUTwYEQFK5AJgTKwqJ5Ed6EaIZQz90uC1Xu7rKQxniLIb4ADHseHGCOcpmsC3S1RgMnydeVQ2j+pRJdtlikixQKRIwEumM6zRqNoVUax4HA1ekpGRVYE2V5maTy1R9d//oaGUiwhom9nQ5dtlYjozLKjl3ELwgjlSLYFo+T4uoKhSQShGpkuwjunclwcirFvFdZTZVzJMQzhOIW45Bjga7fauHIdpvHEzjQbpNU4EAoNEOKVovfIWg0jQbr3Hz4QE0IRGgco3kiaMaiuQ9916KJ4GSLZqawaCYDzVg0EXQ+iyaCAxZNiLclmidC1OTmhv5drdLKQm/4NO2rKwbALy95/b24oFZHQi9cWaH5ZzKEamSuJ92xXKbzpdPcO5HgdzpNRqtVWlmjgXiKRa6byWAX8Quho8+fmZ364wchlv195uru7JA0BAGe9XVKp1DggMB1f/zgYUID5zxwv0//zuUowYsLunWpRPxDpv/y5Ok0Hs3nqYDLS6pEphFzspzOnXI5ClcmZ3Mgl+O6+Tz9MpnkZBkv5xkENHx6StWurFAWAhEsgQMCnhBI+tiVSTl5bo7gn+zGMStYNBbN/+CAwHUtmvvQ4wUOCNhFIKlF8z5AMxZNBElDoBmL5j5oxqKZAu9KNM8FQ5q3twSKxtunjZHnkxNex0Mv5BxotegHEn9BhDKgSw+r1xlsX1yk2X74QHe8uiKm1e1yXYkUEP+Ix/nmb2uLjMqeeXzMGvqclQ8Et7e5rjwOoZFmk+8mDw8Z9/7+nWxJxoiISJCFy7VaOCC0lA/CyOUw0OUlSUUZQzin3eYq9ToGkknM1KgMVHNyocAXkLEYT/72+DWAf6Shr3zfOBZNAJqkRRPBdS2a1wPNWDTvDJqkRRPBdS2a1wPNWDTvHqZqhiZrDqHvzs8TLNnfp7GXy3QsWeCGeEyjwTt3Nks3SiYJTsi8W24gkEK+tySpQChCPvtkJZWfPwnwfP6Mt0IjqUOYery0hBFl+zHWnvn2jTkIoU3KeSpZDYeuLzvkYaBMBktdXTE2fn3NcxaLlFejgbcqFcQsH6+imXqdUpYOiWZub7lTJkMYJhSIeQgxrfV1HvjbNwwtsMrm5iYBlfEiMiSdm6OUl5YIyK2uUgTX1zj7ZVdlel4smrGgi1g0EdzSorkPmrFoQlg0Y0EXsWgiuKVFcx80Y9GEsGgmg06TTNJIRzZTxDM/z4Dzzg6Bh1yOVi+gh1aLXiirtNASpeESVIjFcEmvx+9YjEHpHz84OfQJJSPPpdLGAK4bgnvPzdHYpbnT+WRXBsaHT095hmqVGccy55j+tLREAGx3lxTLy1xufR0ZZDLcSdb9JLiVz+ObSoVYS6FA/iSHlGmrxXelR0dkYiRUbWh3tydCbfV6RJXabXI8yxIZB4tmMtCMRROBFSyasaG2LBozGjRj0URgBYtmbKgti8aMCe2l12MQeHubRjoS3ua/fuXl+/qaftBq4ZvbW64rEBX49o2rCGxVHdqsmsH2kxOuKyO79LkJex0n390hsFqNJXBk/SCiC6urFMp4xTKE4Nb+PjOOZZo1aiyVuHdIoJRXr0cwKZ2muEPj9w9hiP77d7w1g5sNvFksmkdCi7ZoIkhq0ZjfYNE8Elq0RRNBUovG/AaL5tlg8uavX4z0jreGDstkfvnCNN54nG5Uq6GH21vm4TabXHe8K6MZEQ1D2SMHs18F7LK/z6D0eDNfkYpoheHlzU2uOxIMvbbG1OPLS65rpoBF82ygGYtmctCMRfN+sWieDTRj0UwOmrFo3i8WzfPDoo+dDgGMCTd1IKjw9StxlKMjritxChRycsLqmOfnDG7HYiw1enCAXSQ0ww0EYj+hrbLZ3PvsjKTPB0PZy8sMU+fz5E8gcNVqMaYt31tihctLokETLmzK9OS9vf/q6F+4pZkmFs3zQ/u1aH4DmrFo/iYsmueH9mvR/AY0Y9H8TVg0LwEhhHSaqEBoNHoEBB42N5mVnEzim1KJvtLpML00NMGUTw9TKa4iEBEZGRPBQIeH5EYg5PPhw8cBLJyzuMiQ+MoKc6J3dphjO94sW8prwrDLQ/iK9OdPpCvaNS+JRfMS0GksmgiuOxLKy6J5L1g0LwGdxqKJ4LojobwsmveCRfM6MC/4+ppeuLNDl51w7JnvHefmmNP6/Tu7EFxcYCCJQRDkaLfpc4/tdUzalWm740DQRb4axZrJJFGlgwPkNN4aMQ/hi8z1ddanCW3vZ14Fi+Z1QDMWTQSasWjeLxbN64BmLJoINGPRvF8smleGGMnNDWO2l5fML/71C3N8/043eiyETz5+JNZyeMgc5HicRV8yGbp+tUqkp9tl1m2v95+t/gVLtdvk+OaGKcy1GsPU+TyD7efnrDSzu8vE5y9fyMTHjwj1sROUWeNnfp5w19oa4RxZY9S8NSyaV4Yua9GMDZqxaGYKi+aVoctaNGODZiyamcKiebvQ47tdrBCP03d3dwlFyBqa7wymVH/6hHR//cIltslsYtG8XdCMRROBZiya2cSiebugGYsmAs1YNLOJRTPbMGLcajH5N5U6HsCw+c4O302GVgJ9SVhKZ2GBEeyVFb4ZPTrCo/E4c4efb9cB80awaGYbNGPRmLeNRTPboBmLxrxtLJq/EcarOx22s8vlmE18ccEU3YMDokG7u+hqZ4dtDba3SXFwwKI4JyeMzF9eMlqeyTAzV/YdZzbxhPOJzfvAovkbQTMWjXkpLJq/ETRj0ZiXwqIxxkwdi8YYM3UsGmPM1LFojDFTx6Ixxkwdi8YYM3UsGmPM1LFojDFTx6Ixxkwdi8YYM3UsGmPM1LFojDFTx6Ixxkwdi8YYM3UsGmPM1LFojDFTx6Ixxkwdi8YYM3UsGmPM1LFojDFTx6Ixxkwdi8YYM3UsGmPM1LFojDFTx6Ixxkwdi8YYM3UsGmPM1LFojDFT5u7u/wA+9ON3lR9zfAAAAABJRU5ErkJggg=="
+                                    alt="" height="50" width="50"></div>
+                                    <h1 class="fw-bold ps-4 pt-1" style="text-align: center ;">NARJA SUPER STEEL</h1>
+                                </div>
+                            </div>
+                        </nav>
+                        <div class="d-flex  flex-column align-items-center justify-content-center">
+                            <h3 class="fw-light"><strong> Dealer In :</strong><span class="dealerSpacing"> Stainless Plates,
+                                    Pipes & Alloy Scrap Etc</span></h3>
+                            <div>
+                                <hr class="m-0 p-0">
+                                <h4 class="fw-light fs-5 billAddress">11, 1st Floor,Aram Baug, Flat Owners CHS, L.B.S. Marg,
+                                    Kurla(W),
+                                    Mumbai-400070
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+    `;
+            userData.innerHTML = userdata;
+
+            // <input type="text" id="wordConvert" class="form-control" placeholder="Rupees in Words" aria-label="Username" aria-describedby="basic-addon1">
+            let userDataEnd = document.getElementById('userDataEnd');
+            let userdataEnd = ` <div class="container">
+                            <div class="container border pt-1 rounded">
+                                <div class="row">
+                                    <div class="col-6 col-md-6 border-end">
+                                        <div class="border-bottom lh-1">
+                                            <h3>E & O.E</h3>
+                                            <p class = "m-1 p-0"><span> 1)</span>Payment within...................days.</p>
+                                            <p class = "m-1 p-0"><span> 2)</span>Intrest @24% will be charged on all bill paid not on due dated.</p>
+                                            <p class = "m-1 p-0"><span> 3)</span>subject to Mumbai Jurisdiction.</p>
+                                        </div>
+                                        <div>
+                                            <h6 class="m-1 p-0 fw-bold">Bank Details :</h6>
+                                            <h6 class="m-1 p-0">Bank Account Number : <span class="fw-bold">120205000660</span></h6>
+                                            <h6 class="m-1 p-0">Bank Branch : <span class="fw-bold">kurla(W)</span></h6>
+                                            <h6 class="m-1 p-0" >IFSC Code  : <span class="fw-bold">ICIC0001202</span></h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-2 col-md-2 border-end">
+                                        <br><br><br><br><br><br>
+                                        <div class="border-top text-center">
+                                            <h6>Receiver Signature</h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-md-4 text-center">
+                                        <div>
+                                            <h6 class="fw-bold">For NARJA SUPER STEEL</h6>
+                                        </div>
+                                        <br><br><br><br><br>
+                                        <div>
+                                            <h6>Proprietor</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> `;
+            userDataEnd.innerHTML = userdataEnd;
+        });
+
+        function NumToWord(inputNumber) {
+            var str = new String(inputNumber)
+            var splt = str.split("");
+            var rev = splt.reverse();
+            var once = ['Zero', ' One', ' Two', ' Three', ' Four', ' Five', ' Six', ' Seven', ' Eight', ' Nine'];
+            var twos = ['Ten', ' Eleven', ' Twelve', ' Thirteen', ' Fourteen', ' Fifteen', ' Sixteen', ' Seventeen', ' Eighteen', ' Nineteen'];
+            var tens = ['', 'Ten', ' Twenty', ' Thirty', ' Forty', ' Fifty', ' Sixty', ' Seventy', ' Eighty', ' Ninety'];
+
+            numLength = rev.length;
+            var word = new Array();
+            var j = 0;
+
+            for (i = 0; i < numLength; i++) {
+                switch (i) {
+
+                    case 0:
+                        if ((rev[i] == 0) || (rev[i + 1] == 1)) {
+                            word[j] = '';
+                        }
+                        else {
+                            word[j] = '' + once[rev[i]];
+                        }
+                        word[j] = word[j];
+                        break;
+
+                    case 1:
+                        aboveTens();
+                        break;
+
+                    case 2:
+                        if (rev[i] == 0) {
+                            word[j] = '';
+                        }
+                        else if ((rev[i - 1] == 0) || (rev[i - 2] == 0)) {
+                            word[j] = once[rev[i]] + " Hundred ";
+                        }
+                        else {
+                            word[j] = once[rev[i]] + " Hundred and";
+                        }
+                        break;
+
+                    case 3:
+                        if (rev[i] == 0 || rev[i + 1] == 1) {
+                            word[j] = '';
+                        }
+                        else {
+                            word[j] = once[rev[i]];
+                        }
+                        if ((rev[i + 1] != 0) || (rev[i] > 0)) {
+                            word[j] = word[j] + " Thousand";
+                        }
+                        break;
+
+
+                    case 4:
+                        aboveTens();
+                        break;
+
+                    case 5:
+                        if ((rev[i] == 0) || (rev[i + 1] == 1)) {
+                            word[j] = '';
+                        }
+                        else {
+                            word[j] = once[rev[i]];
+                        }
+                        if (rev[i + 1] !== '0' || rev[i] > '0') {
+                            word[j] = word[j] + " Lakh";
+                        }
+
+                        break;
+
+                    case 6:
+                        aboveTens();
+                        break;
+
+                    case 7:
+                        if ((rev[i] == 0) || (rev[i + 1] == 1)) {
+                            word[j] = '';
+                        }
+                        else {
+                            word[j] = once[rev[i]];
+                        }
+                        if (rev[i + 1] !== '0' || rev[i] > '0') {
+                            word[j] = word[j] + " Crore";
+                        }
+                        break;
+
+                    case 8:
+                        aboveTens();
+                        break;
+
+
+                    default: break;
+                }
+                j++;
+            }
+
+            function aboveTens() {
+                if (rev[i] == 0) { word[j] = ''; }
+                else if (rev[i] == 1) { word[j] = twos[rev[i - 1]]; }
+                else { word[j] = tens[rev[i]]; }
+            }
+
+            word.reverse();
+            var finalOutput = '';
+            for (i = 0; i < numLength; i++) {
+                finalOutput = finalOutput + word[i];
+            }
+            return finalOutput;
+        }
+
+
+    </script>
+    <!-- html2pdf CDN-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+</body>
+
+</html>
